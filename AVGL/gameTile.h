@@ -20,8 +20,8 @@ private:
 	int gameTileType; // [EN] 0 = PASSABLE, 1 = UNPASSABLE
 
 	// [EN] Private functions
-	void initializeSprite(std::string textureName);
 	void initializeTexture(std::string textureName);
+	void initializeSprite();
 
 public:
 	// [EN] Constructor, Destructor
@@ -34,6 +34,10 @@ public:
 	// [EN] Functions
 	void update(sf::RenderTarget* target);
 	void render(sf::RenderTarget* target);
+
+	// [EN] Getter
+	int getTileType() const;
+	sf::Vector2f getPosition() const;
 };
 
 #endif

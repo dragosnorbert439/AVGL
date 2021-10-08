@@ -9,14 +9,20 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
+#include "gameTile.h"
+
 class Player
 {
 private:
 	// [HU] Jatekos alak
-	sf::Sprite sprite;
+	sf::Sprite sprite; // [EN] contains player position
 	sf::Texture texture;
-	sf::Vector2f position;
 	float movementSpeed;
+	float* deltaTime;
+	bool* moves;	// [EN] moves[0] = left
+					//		moves[1] = right
+					//		moves[2] = top
+					//		moves[3] = down
 
 	// [EN] Private functions
 	void initializeVariables();
@@ -25,13 +31,14 @@ private:
 
 public:
 	// [EN] Constructor, Destructor
-	Player(float x = 50.f, float y = 50.f);
+	Player(float* deltaTime, float x = 100.f, float y = 100.f);
 	virtual ~Player();
 
 	// [EN] Functions
-	void update(const sf::RenderTarget* target);
-	void updateInput();
-	void updateWindowBoundsCollision(const sf::RenderTarget* target);
+	void update(sf::RenderTarget* target, std::vector<std::vector<GameTile*>> &tiles);
+	void updateInput(std::vector<std::vector<GameTile*>> &tiles);
+	void updateWindowBoundsCollision(sf::RenderTarget* target);
+	void updateWallCollison(sf::RenderTarget* target, std::vector<std::vector<GameTile *>> tiles);
 	void render(sf::RenderTarget* target);
 
 	// [EN] Getter, Setter

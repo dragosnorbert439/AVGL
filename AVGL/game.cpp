@@ -9,8 +9,8 @@ void Game::initializeVariables()
 
 void Game::initializeWindow()
 {
-	this->videoMode.height = 8 * TILE_SIZE;
-	this->videoMode.width = 8 * TILE_SIZE;
+	this->videoMode.height = this->gameRows * TILE_SIZE;
+	this->videoMode.width = this->gameCols * TILE_SIZE;
 	// [HU] teljes kepernyonek // this->videoMode.getDesktopMode();
 	this->window = new sf::RenderWindow(this->videoMode, "AVGL", sf::Style::Titlebar | sf::Style::Close);
     this->window->setFramerateLimit(60);
@@ -18,17 +18,45 @@ void Game::initializeWindow()
 
 void Game::initializePlayer()
 {
-    this->player = new Player();
+    this->player = new Player(&this->dt, 100.f, 100.f);
 }
 
-void Game::initializeMap()
+void Game::initializeTiles()
 {
     /*
         [HU]    Ez oldja meg a palyat
                 Egyelore csak hard kodolt
     */
 
+    this->tiles.clear();
 
+    std::vector<GameTile*> row;
+    for (int i = 0; i < this->gameRows; ++i)
+    {
+        row.erase(row.begin(), row.end());
+
+        for (int j = 0; j < this->gameCols; ++j)
+        {
+            if (i == 1 && j == 4)
+            {
+                row.push_back(new GameTile("C:/Egyetem/Allamvizsga/images/wall.png", j * TILE_SIZE, i * TILE_SIZE, GameTile::UNPASSABLE));
+            }
+            else if (i == 4 && j == 4 || i == 5 && j == 4 || i == 6 && j == 4)
+            {
+                row.push_back(new GameTile("C:/Egyetem/Allamvizsga/images/wall.png", j * TILE_SIZE, i * TILE_SIZE, GameTile::UNPASSABLE));
+            }
+            else if (!i || !j || i == this->gameRows - 1 || j == this->gameCols - 1)
+            {
+                row.push_back(new GameTile("C:/Egyetem/Allamvizsga/images/wall.png", j * TILE_SIZE, i * TILE_SIZE, GameTile::UNPASSABLE));
+            }
+            else
+            {
+                row.push_back(new GameTile("C:/Egyetem/Allamvizsga/images/ground.png", j * TILE_SIZE, i * TILE_SIZE, GameTile::PASSABLE));
+            }
+        }
+
+        tiles.push_back(row);
+    }
 }
 
 // [EN] Constructor, Destructor
@@ -36,11 +64,13 @@ Game::Game()
 {
 	this->initializeVariables();
 	this->initializeWindow();
+    this->initializeTiles();
     this->initializePlayer();
 }
 
 Game::~Game()
 {
+    for (int i = 0; i < gameRows; ++i) for (int j = 0; j < gameCols; ++j) delete tiles.at(i).at(j);
 	delete this->window;
     delete this->player;
 }
@@ -55,8 +85,21 @@ const bool Game::isRunning() const
 // [EN] Functions
 void Game::update()
 {
+    // [EN] Event polling
+    // [HU] Esemeny kezelo
     this->pollEvents();
-    this->player->update(this->window);
+
+    // [EN] Update here
+    // [HU] Itt frissit
+    for (int i = 0; i < this->gameRows; ++i)
+    {
+        for (int j = 0; j < this->gameCols; ++j)
+        {
+            this->tiles[i][j]->update(this->window);
+        }
+    }
+
+    this->player->update(this->window, this->tiles);
 }
 
 void Game::render()
@@ -64,9 +107,19 @@ void Game::render()
     this->window->clear(sf::Color(0, 0, 0, 255));
 
     // [EN] Drawing here
-    // [HU] Itt (ujra)rajzolja
+    // [HU] Itt (ujra)rajzoljas
+
+    for (int i = 0; i < this->gameRows; ++i)
+    {
+        for (int j = 0; j < this->gameCols; ++j)
+        {
+            this->tiles[i][j]->render(this->window);
+        }
+    }
+
     this->player->render(this->window);
 
+    // [HU] Itt hajtja vegre
     this->window->display();
 }
 
@@ -84,4 +137,14 @@ void Game::pollEvents()
             break;
         }
     }
+}
+
+void Game::setDeltaTime(const float value)
+{
+    this->dt = value;
+}
+
+float Game::getDeltaTime() const
+{
+    return this->dt;
 }

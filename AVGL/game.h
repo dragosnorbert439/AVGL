@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ctime>
 #include <vector>
+#include <algorithm>
 
 #include "player.h"
 #include "gameTile.h"
@@ -17,8 +18,14 @@ class Game
 private:
 	// [EN] Variables
 	Player *player;
+	float dt{ 1 };	// [HU] Delta ido, hogy gyors gepen is ugy fusson,
+					//      mind egy lassun es forditva
+
+	std::vector<std::vector<GameTile *>> tiles;
+
 	bool gameOver;
-	std::vector<std::vector<GameTile*>> tiles;
+	int gameRows { 8 };
+	int gameCols { 8 };
 
 	// [EN] Window
 	sf::RenderWindow* window;
@@ -29,7 +36,7 @@ private:
 	void initializeVariables();
 	void initializeWindow();
 	void initializePlayer();
-	void initializeMap();
+	void initializeTiles();
 
 public:
 	// [EN] Constructor, Destructor
@@ -43,6 +50,8 @@ public:
 	void update();
 	void render();
 	void pollEvents();
+	void setDeltaTime(const float value);
+	float getDeltaTime() const;
 };
 
 #endif

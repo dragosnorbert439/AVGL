@@ -1,25 +1,26 @@
 #include "gameTile.h"
 
-void GameTile::initializeSprite(std::string)
-{
-	this->sprite.setTexture(this->texture);
-}
 
-void GameTile::initializeTexture(std::string)
+void GameTile::initializeTexture(std::string textureName)
 {
-	if (!this->texture.loadFromFile("C:/Egyetem/Allamvizsga/images/wall.png"))
+	if (!this->texture.loadFromFile(textureName))
 	{
 		std::cout << "Error::GameTile::initializeTexture::Could not load texture file." << std::endl;
 	}
 }
 
+void GameTile::initializeSprite()
+{
+	this->sprite.setTexture(this->texture);
+}
+
 // [EN] Constructor, Destructor
-GameTile::GameTile(std::string textureName, float x, float y, int gameTileType)
+GameTile::GameTile(std::string textureName, float x, float y, int tileType)
 {	
-	initializeSprite(textureName);
-	pos = sf::Vector2f(x, y);
-	sprite.setPosition(pos);
-	gameTileType = gameTileType;
+	initializeTexture(textureName);
+	initializeSprite();
+	this->sprite.setPosition(x, y);
+	this->gameTileType = tileType;
 }
 
 GameTile::~GameTile()
@@ -29,10 +30,22 @@ GameTile::~GameTile()
 // [EN] Functions
 void GameTile::update(sf::RenderTarget* target)
 {
-	// [HU] Ha az eger ralep a talajra
+	// [HU] Ha az eger ralep a talajra - meg kell dolgozni rajta
 }
 
 void GameTile::render(sf::RenderTarget* target)
 {
 	target->draw(this->sprite);
 }
+
+// [EN] Getter
+int GameTile::getTileType() const
+{
+	return this->gameTileType;
+}
+
+sf::Vector2f GameTile::getPosition() const
+{
+	return this->pos;
+}
+
