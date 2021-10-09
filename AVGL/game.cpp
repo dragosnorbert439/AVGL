@@ -31,6 +31,35 @@ void Game::initializeTiles()
     this->tiles.clear();
 
     std::vector<GameTile*> row;
+
+    std::ifstream fin("testMapFile.txt");
+    if (!fin.is_open()) exit(1);
+    
+    unsigned int v;
+    for (int i = 0; i < this->gameRows; ++i)
+    {
+        row.erase(row.begin(), row.end());
+
+        for (int j = 0; j < this->gameCols; ++j)
+        {
+            fin >> v;
+
+            if (v == 1)
+            {
+                row.push_back(new GameTile("C:/Egyetem/Allamvizsga/images/wall.png", j * TILE_SIZE, i * TILE_SIZE, GameTile::UNPASSABLE));
+            }
+            else
+            {
+                row.push_back(new GameTile("C:/Egyetem/Allamvizsga/images/ground.png", j * TILE_SIZE, i * TILE_SIZE, GameTile::PASSABLE));
+            }
+        }
+
+        this->tiles.push_back(row);
+    }
+
+    fin.close();
+
+    /*
     for (int i = 0; i < this->gameRows; ++i)
     {
         row.erase(row.begin(), row.end());
@@ -61,6 +90,7 @@ void Game::initializeTiles()
 
         tiles.push_back(row);
     }
+    */
 }
 
 // [EN] Constructor, Destructor

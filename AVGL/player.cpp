@@ -1,11 +1,11 @@
 #include "player.h"
-#define eps 1
+#define eps 2
 
 
 // [EN] Private functions
 void Player::initializeVariables()
 {
-	this->movementSpeed = 200.f;
+	this->movementSpeed = 100.f;
 	this->moves = new bool[4];
 }
 
@@ -156,15 +156,19 @@ void Player::updateWindowBoundsCollision(sf::RenderTarget* target)
 
 void Player::updateWallCollison(sf::RenderTarget* target, std::vector<std::vector<GameTile*>> tiles)
 {
-	// [HU]	Egyszeruseg kedveert [i,j] koordinatak annak a 'kockanak' az indexjei amelyiken van a jatekosunk
+	/*
+	* [EN] Variables used to help understand:
+	*	 // [HU]	Egyszeruseg kedveert [i,j] koordinatak annak a 'kockanak' az indexjei amelyiken van a jatekosunk
+		
+		sf::Vector2f spriteTopRight = sf::Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width, sprite.getPosition().y);
+		sf::Vector2f spriteBotLeft = sf::Vector2f(sprite.getPosition().x, sprite.getPosition().y + sprite.getGlobalBounds().height);
+		sf::Vector2f spriteBotRight = sf::Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width,
+													sprite.getPosition().y + sprite.getGlobalBounds().height);
+	*/
+	//std::cout << sprite.getPosition().y + sprite.getGlobalBounds().height << " " << sprite.getPosition().x << std::endl;
+
 	int i = sprite.getPosition().y / TILE_SIZE;
 	int j = sprite.getPosition().x / TILE_SIZE;
-	sf::Vector2f spriteTopRight = sf::Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width, sprite.getPosition().y);
-	sf::Vector2f spriteBotLeft = sf::Vector2f(sprite.getPosition().x, sprite.getPosition().y + sprite.getGlobalBounds().height);
-	sf::Vector2f spriteBotRight = sf::Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width,
-												sprite.getPosition().y + sprite.getGlobalBounds().height);
-
-	//std::cout << sprite.getPosition().y + sprite.getGlobalBounds().height << " " << sprite.getPosition().x << std::endl;
 
 	// [HU] A kovetkezo lepesek mindegyik iranyra vonatkozik
 	// [EN] LEFT
@@ -202,7 +206,7 @@ void Player::updateWallCollison(sf::RenderTarget* target, std::vector<std::vecto
 			|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height - eps) / TILE_SIZE)][(int)((sprite.getPosition().x + sprite.getGlobalBounds().width - eps) / TILE_SIZE)]->getTileType() == GameTile::UNPASSABLE
 			)
 		{
-			if (j != (int)((sprite.getGlobalBounds().left + sprite.getGlobalBounds().width + movementSpeed * deltaTime[0]) / TILE_SIZE) )
+			if (j != (int)((sprite.getGlobalBounds().left + sprite.getGlobalBounds().width + movementSpeed * deltaTime[0]) / TILE_SIZE))
 			{
 				this->moves[1] = false;
 
@@ -248,7 +252,7 @@ void Player::updateWallCollison(sf::RenderTarget* target, std::vector<std::vecto
 			|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height - eps) / TILE_SIZE)][(int)((sprite.getPosition().x + sprite.getGlobalBounds().width - eps) / TILE_SIZE)]->getTileType() == GameTile::UNPASSABLE
 			)
 		{
-			if (i != (int)((sprite.getGlobalBounds().top + sprite.getGlobalBounds().height + movementSpeed * deltaTime[0]) / TILE_SIZE))
+			if (i != (int)((sprite.getPosition().y + sprite.getGlobalBounds().height + movementSpeed * deltaTime[0]) / TILE_SIZE))
 			{
 				this->moves[3] = false;
 

@@ -41,6 +41,9 @@
     <Text Include="forTesting.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="testMapFile.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameTile.h">
