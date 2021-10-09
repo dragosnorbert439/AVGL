@@ -37,7 +37,11 @@ void Game::initializeTiles()
 
         for (int j = 0; j < this->gameCols; ++j)
         {
-            if (i == 1 && j == 4)
+            if (i == 0 && j == 3)
+            {
+                row.push_back(new GameTile("C:/Egyetem/Allamvizsga/images/ground.png", j * TILE_SIZE, i * TILE_SIZE, GameTile::PASSABLE));
+            }
+            else if (i == 1 && j == 4)
             {
                 row.push_back(new GameTile("C:/Egyetem/Allamvizsga/images/wall.png", j * TILE_SIZE, i * TILE_SIZE, GameTile::UNPASSABLE));
             }

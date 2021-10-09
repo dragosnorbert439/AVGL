@@ -1,4 +1,6 @@
 #include "player.h"
+#define eps 1
+
 
 // [EN] Private functions
 void Player::initializeVariables()
@@ -162,13 +164,15 @@ void Player::updateWallCollison(sf::RenderTarget* target, std::vector<std::vecto
 	sf::Vector2f spriteBotRight = sf::Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width,
 												sprite.getPosition().y + sprite.getGlobalBounds().height);
 
+	//std::cout << sprite.getPosition().y + sprite.getGlobalBounds().height << " " << sprite.getPosition().x << std::endl;
+
 	// [HU] A kovetkezo lepesek mindegyik iranyra vonatkozik
 	// [EN] LEFT
 	if (j - 1 >= 0)
 	{
 		// [HU] Ha a bal felere nem lephetunk
 		if (tiles[i][j - 1]->getTileType() == GameTile::UNPASSABLE // [HU] S kell, hogy erzekelje a bal also sarka is
-			|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height) / TILE_SIZE)][j - 1]->getTileType() == GameTile::UNPASSABLE
+			|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height - eps) / TILE_SIZE)][j - 1]->getTileType() == GameTile::UNPASSABLE
 			)
 		{
 			// [HU]	Ha egy balra lepessel belepnenk a falba
@@ -195,7 +199,7 @@ void Player::updateWallCollison(sf::RenderTarget* target, std::vector<std::vecto
 	if (j + 1 < tiles[0].size())
 	{
 		if (tiles[i][j + 1]->getTileType() == GameTile::UNPASSABLE
-			//|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height) / TILE_SIZE)][(int)((sprite.getPosition().x + sprite.getGlobalBounds().width) / TILE_SIZE)]->getTileType() == GameTile::UNPASSABLE
+			|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height - eps) / TILE_SIZE)][(int)((sprite.getPosition().x + sprite.getGlobalBounds().width - eps) / TILE_SIZE)]->getTileType() == GameTile::UNPASSABLE
 			)
 		{
 			if (j != (int)((sprite.getGlobalBounds().left + sprite.getGlobalBounds().width + movementSpeed * deltaTime[0]) / TILE_SIZE) )
@@ -217,7 +221,9 @@ void Player::updateWallCollison(sf::RenderTarget* target, std::vector<std::vecto
 	// [EN] UP
 	if (i - 1 >= 0)
 	{
-		if (tiles[i - 1][j]->getTileType() == GameTile::UNPASSABLE)
+		if (tiles[i - 1][j]->getTileType() == GameTile::UNPASSABLE
+			|| tiles[(int)((sprite.getPosition().y - eps) / TILE_SIZE)][(int)((sprite.getPosition().x + sprite.getGlobalBounds().width - eps) / TILE_SIZE)]->getTileType() == GameTile::UNPASSABLE
+			)
 		{
 			if (i != (int)((sprite.getGlobalBounds().top - this->movementSpeed * this->deltaTime[0]) / TILE_SIZE))
 			{
@@ -238,7 +244,9 @@ void Player::updateWallCollison(sf::RenderTarget* target, std::vector<std::vecto
 	// [EN] DOWN
 	if (i + 1 < tiles.size())
 	{
-		if (tiles[i + 1][j]->getTileType() == GameTile::UNPASSABLE)
+		if (tiles[i + 1][j]->getTileType() == GameTile::UNPASSABLE
+			|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height - eps) / TILE_SIZE)][(int)((sprite.getPosition().x + sprite.getGlobalBounds().width - eps) / TILE_SIZE)]->getTileType() == GameTile::UNPASSABLE
+			)
 		{
 			if (i != (int)((sprite.getGlobalBounds().top + sprite.getGlobalBounds().height + movementSpeed * deltaTime[0]) / TILE_SIZE))
 			{
