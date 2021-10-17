@@ -36,12 +36,21 @@
     <ClCompile Include="player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="convertorPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="forTesting.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="testMapFile.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="oldCodeWallCollision.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="oldCodeWallCollision2.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

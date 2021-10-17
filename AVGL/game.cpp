@@ -18,7 +18,10 @@ void Game::initializeWindow()
 
 void Game::initializePlayer()
 {
-    this->player = new Player(&this->dt, 100.f, 100.f);
+    this->player = new Player(100.f, 100.f);
+    this->player->setDT(&this->dt);
+    this->player->setGameEvent(&this->event);
+    this->player->setGameRenderWindow(&this->window);
 }
 
 void Game::initializeTiles()

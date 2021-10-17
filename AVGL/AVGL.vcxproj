@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="configSrc.cpp" />
+    <ClCompile Include="convertorPlayer.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="gameTile.cpp" />
     <ClCompile Include="gameWorld.cpp" />
@@ -161,6 +162,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="forTesting.txt" />
+    <Text Include="oldCodeWallCollision.txt" />
+    <Text Include="oldCodeWallCollision2.txt" />
     <Text Include="testMapFile.txt" />
   </ItemGroup>
   <ItemGroup>

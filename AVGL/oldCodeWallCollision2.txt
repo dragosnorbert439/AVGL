@@ -1,0 +1,49 @@
+void Player::updateInput(std::vector<std::vector<GameTile*>> &tiles)
+{
+	
+	sf::Vector2i playerPos = sf::Vector2i(sprite.getPosition());
+	//std::cout << "Player: x = " << playerPos.x << " y = " << playerPos.y << "\t";
+	sf::Vector2i tilePos = sf::Vector2i(playerPos.y / TILE_SIZE, playerPos.x / TILE_SIZE);
+	//std::cout << "Tile: i = " << tilePos.x << " j = " << tilePos.y << "\t\t";
+	
+
+	// [EN] Keyboard input
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		sf::Vector2f playerPos = sf::Vector2f(sprite.getPosition());
+		sf::Vector2i tilePos = sf::Vector2i((playerPos.y - movementSpeed) / TILE_SIZE, playerPos.x / TILE_SIZE);
+
+		if (tiles[tilePos.x][tilePos.y]->getTileType() == GameTile::PASSABLE)
+		{
+			sprite.move(-movementSpeed, 0.f);
+		}
+	}
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		sf::Vector2f playerPos = sf::Vector2f(sprite.getPosition());
+		sf::Vector2i tilePos = sf::Vector2i((playerPos.y + movementSpeed) / TILE_SIZE, playerPos.x / TILE_SIZE);
+
+		if (tiles[tilePos.x][tilePos.y]->getTileType() == GameTile::PASSABLE)
+		{
+			sprite.move(movementSpeed, 0.f);
+		}
+	}
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		sf::Vector2i playerPos = sf::Vector2i(sprite.getPosition());
+		sf::Vector2i tilePos = sf::Vector2i(playerPos.y / TILE_SIZE, (int)((playerPos.x - movementSpeed) / TILE_SIZE));
+
+		std::cout << tilePos.x << " " << (int)((sprite.getPosition().x - movementSpeed) / TILE_SIZE) << std::endl;
+		//if (tiles[tilePos.x][tilePos.y]->getTileType() == GameTile::PASSABLE)
+		{
+			sprite.move(0.f, -movementSpeed);
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		sprite.move(0.f, movementSpeed);
+	}
+	
+}

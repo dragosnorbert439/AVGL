@@ -2,6 +2,8 @@
 #define PLAYER_H
 
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -24,6 +26,9 @@ private:
 					//		moves[2] = top
 					//		moves[3] = down
 
+	sf::Event* gameEvent;
+	sf::RenderWindow** gameRenderWindow;
+
 	// [EN] Private functions
 	void initializeVariables();
 	void initializeTexture();
@@ -31,8 +36,13 @@ private:
 
 public:
 	// [EN] Constructor, Destructor
-	Player(float* deltaTime, float x = 100.f, float y = 100.f);
+	Player(float x = 100.f, float y = 100.f);
 	virtual ~Player();
+
+	// [EN] Game class related functions (initializers)
+	void setDT(float* gameDeltaTime);
+	void setGameRenderWindow(sf::RenderWindow** gameRenderWindow);
+	void setGameEvent(sf::Event* gameEvent);
 
 	// [EN] Functions
 	void update(sf::RenderTarget* target, std::vector<std::vector<GameTile*>> &tiles);
@@ -40,6 +50,7 @@ public:
 	void updateWindowBoundsCollision(sf::RenderTarget* target);
 	void updateWallCollison(sf::RenderTarget* target, std::vector<std::vector<GameTile *>> tiles);
 	void render(sf::RenderTarget* target);
+	void move(unsigned int i, unsigned int j, std::vector<std::vector<GameTile*>> &tiles); // [EN] Moving on the tiles
 
 	// [EN] Getter, Setter
 	sf::Vector2f getPosition() const;

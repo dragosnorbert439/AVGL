@@ -1,0 +1,115 @@
+
+void Player::updateWallCollison(sf::RenderTarget* target, std::vector<std::vector<GameTile*>> tiles)
+{
+	/*
+	* [EN] Variables used to help understand:
+	*	 // [HU]	Egyszeruseg kedveert [i,j] koordinatak annak a 'kockanak' az indexjei amelyiken van a jatekosunk
+		
+		sf::Vector2f spriteTopRight = sf::Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width, sprite.getPosition().y);
+		sf::Vector2f spriteBotLeft = sf::Vector2f(sprite.getPosition().x, sprite.getPosition().y + sprite.getGlobalBounds().height);
+		sf::Vector2f spriteBotRight = sf::Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width,
+													sprite.getPosition().y + sprite.getGlobalBounds().height);
+	*/
+	//std::cout << sprite.getPosition().y + sprite.getGlobalBounds().height << " " << sprite.getPosition().x << std::endl;
+
+	int i = sprite.getPosition().y / TILE_SIZE;
+	int j = sprite.getPosition().x / TILE_SIZE;
+
+	// [HU] A kovetkezo lepesek mindegyik iranyra vonatkozik
+	// [EN] LEFT
+	if (j - 1 >= 0)
+	{
+		// [HU] Ha a bal felere nem lephetunk
+		if (tiles[i][j - 1]->getTileType() == GameTile::UNPASSABLE // [HU] S kell, hogy erzekelje a bal also sarka is
+			|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height - eps) / TILE_SIZE)][j - 1]->getTileType() == GameTile::UNPASSABLE
+			)
+		{
+			// [HU]	Ha egy balra lepessel belepnenk a falba
+			//		akkor inkabb elmejunk a fal melle
+			//		es letiltjuk, hogy mehessunk meg balra.
+			if (j != (int)((sprite.getGlobalBounds().left - this->movementSpeed * this->deltaTime[0]) / TILE_SIZE))
+			{
+				this->moves[0] = false;
+
+				// [HU] atveszem a key inputot es itt kezelem tovabba
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+				{
+					std::cout << "Falnak ment. [LEFT]" << std::endl;
+					sprite.setPosition(j * TILE_SIZE, sprite.getGlobalBounds().top);
+				}
+			}
+			else this->moves[0] = true;
+		}
+		else this->moves[0] = true;
+	}
+	else this->moves[0] = true;
+
+	// [EN] RIGHT
+	if (j + 1 < tiles[0].size())
+	{
+		if (tiles[i][j + 1]->getTileType() == GameTile::UNPASSABLE
+			|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height - eps) / TILE_SIZE)][(int)((sprite.getPosition().x + sprite.getGlobalBounds().width - eps) / TILE_SIZE)]->getTileType() == GameTile::UNPASSABLE
+			)
+		{
+			if (j != (int)((sprite.getGlobalBounds().left + sprite.getGlobalBounds().width + movementSpeed * deltaTime[0]) / TILE_SIZE))
+			{
+				this->moves[1] = false;
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+				{
+					std::cout << "Falnak ment. [RIGHT]" << std::endl;
+					sprite.setPosition(j * TILE_SIZE, sprite.getGlobalBounds().top);
+				}
+			}
+			else this->moves[1] = true;
+		}
+		else this->moves[1] = true;
+	}
+	else this->moves[1] = true;
+
+	// [EN] UP
+	if (i - 1 >= 0)
+	{
+		if (tiles[i - 1][j]->getTileType() == GameTile::UNPASSABLE
+			|| tiles[(int)((sprite.getPosition().y - eps) / TILE_SIZE)][(int)((sprite.getPosition().x + sprite.getGlobalBounds().width - eps) / TILE_SIZE)]->getTileType() == GameTile::UNPASSABLE
+			)
+		{
+			if (i != (int)((sprite.getGlobalBounds().top - this->movementSpeed * this->deltaTime[0]) / TILE_SIZE))
+			{
+				this->moves[2] = false;
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+				{
+					std::cout << "Falnak ment. [UP]" << std::endl;
+					sprite.setPosition(sprite.getGlobalBounds().left, i * TILE_SIZE);
+				}
+			}
+			else this->moves[2] = true;
+		}
+		else this->moves[2] = true;
+	}
+	else this->moves[2] = true;
+
+	// [EN] DOWN
+	if (i + 1 < tiles.size())
+	{
+		if (tiles[i + 1][j]->getTileType() == GameTile::UNPASSABLE
+			|| tiles[(int)((sprite.getPosition().y + sprite.getGlobalBounds().height - eps) / TILE_SIZE)][(int)((sprite.getPosition().x + sprite.getGlobalBounds().width - eps) / TILE_SIZE)]->getTileType() == GameTile::UNPASSABLE
+			)
+		{
+			if (i != (int)((sprite.getPosition().y + sprite.getGlobalBounds().height + movementSpeed * deltaTime[0]) / TILE_SIZE))
+			{
+				this->moves[3] = false;
+
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+				{
+					std::cout << "Falnak ment. [DOWN]" << std::endl;
+					sprite.setPosition(sprite.getGlobalBounds().left, i * TILE_SIZE);
+				}
+			}
+			else this->moves[3] = true;
+		}
+		else this->moves[3] = true;
+	}
+	else this->moves[3] = true;
+}
